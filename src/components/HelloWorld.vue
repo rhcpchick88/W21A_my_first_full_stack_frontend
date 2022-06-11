@@ -1,18 +1,28 @@
 <template>
   <div class="hello">
-    <input v-model="blogPost"
+    <input v-model="inputPost"
     type="text"
     id="blogInput">
     <button @click="postText"> Click me to post! </button>
-    <h3>{{posts}}<button @click="editPost">Edit post</button><button @click="deletePost"> Delete post</button></h3>
+    <div
+    v-for="post in blogPosts" 
+    :key="post.postId">
+    <h2>{{post.postId}}</h2>
+    <button @click="editPost">Edit post</button>
+    <button @click="deletePost"> Delete post</button>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
+  data(){
+    return{
+      blogPosts: []
+    }
   }
 }
 </script>
