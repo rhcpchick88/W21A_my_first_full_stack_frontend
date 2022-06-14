@@ -9,6 +9,9 @@
     :key="post.postId">
     {{post.postId}}
     <h2>{{post[1]}}</h2>
+    <input v-model="updateText"
+    type="text"
+    id="blogEdit">
     <button @click="editPost">Edit post</button>
     <button @click="deletePost"> Delete post</button>
     </div>
@@ -49,19 +52,29 @@ export default {
         console.log(error);
       })
     },
-    editPost(){
-
-    },
     deletePost(){
       axios.request({
         url : "http//127.0.0.1:5000/api/blog_posting",
-        method : "DELETE"
+        method : "DELETE",
       }).then((response)=>{
         console.log(response);
       }).catch((error)=>{
         console.log(error);
       })
-    }
+    },
+    editPost(){
+      axios.request({
+        url : "http//127.0.0.1:5000/api/blog_posting",
+        method : "PATCH",
+        data : {
+          updateText : this.postText
+        }        
+      }).then(()=>{
+        this.getPost();
+      }).catch((error)=>{
+        console.log(error);
+      })
+    },    
   },
   mounted() {
     this.getPost()
