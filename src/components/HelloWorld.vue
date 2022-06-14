@@ -1,13 +1,14 @@
 <template>
   <div class="hello">
-    <input v-model="inputPost"
+    <input v-model="postText"
     type="text"
     id="blogInput">
-    <button @click="postText"> Click me to post! </button>
+    <button @click="postBlog"> Click me to post! </button>
     <div
     v-for="post in blogPosts" 
     :key="post.postId">
-    <h2>{{post.postId}}</h2>
+    {{post.postId}}
+    <h2>{{post[1]}}</h2>
     <button @click="editPost">Edit post</button>
     <button @click="deletePost"> Delete post</button>
     </div>
@@ -23,6 +24,47 @@ export default {
     return{
       blogPosts: []
     }
+  },
+  methods: {
+    getPost(){
+      axios.request({
+        url : "http://127.0.0.1:5000/api/blog_posting",
+        method : "GET"
+      }).then((response)=>{
+        this.blogPosts = response.data;
+      }).catch((error=>{
+        console.log(error);
+      }))
+    },
+    postBlog(){
+      axios.request({
+        url : "http://127.0.0.1:5000/api/blog_posting",
+        method : "POST",
+        data : {
+          postText : this.postText
+        }
+      }).then(()=>{
+        this.getPost(); 
+      }).catch((error)=>{
+        console.log(error);
+      })
+    },
+    editPost(){
+
+    },
+    deletePost(){
+      axios.request({
+        url : "http//127.0.0.1:5000/api/blog_posting",
+        method : "DELETE"
+      }).then((response)=>{
+        console.log(response);
+      }).catch((error)=>{
+        console.log(error);
+      })
+    }
+  },
+  mounted() {
+    this.getPost()
   }
 }
 </script>
