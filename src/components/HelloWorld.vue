@@ -68,7 +68,10 @@ export default {
         method : "PATCH",
         data : {
           updateText : this.postText
-        }        
+        },
+        headers: {
+          "Content-Type" : "application/json"
+        }
       }).then(()=>{
         this.getPost();
       }).catch((error)=>{
