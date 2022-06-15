@@ -4,6 +4,7 @@
     type="text"
     id="blogInput">
     <button @click="postBlog"> Click me to post! </button>
+    <!-- v-for loop for each blog post -->
     <div
     v-for="post in blogPosts" 
     :key="post.postId">
@@ -13,7 +14,7 @@
     type="text"
     id="blogEdit">
     <button @click="editPost">Edit post</button>
-    <button @click="deletePost"> Delete post</button>
+    <button @click="deletePost(post.postId)"> Delete post</button>
     </div>
   </div>
 </template>
@@ -52,10 +53,13 @@ export default {
         console.log(error);
       })
     },
-    deletePost(){
+    deletePost(id){
       axios.request({
-        url : "http//127.0.0.1:5000/api/blog_posting",
+        url : "http://127.0.0.1:5000/api/blog_posting",
         method : "DELETE",
+        data: {
+          postId : id
+        }
       }).then((response)=>{
         console.log(response);
       }).catch((error)=>{
@@ -64,10 +68,11 @@ export default {
     },
     editPost(){
       axios.request({
-        url : "http//127.0.0.1:5000/api/blog_posting",
+        url : "http://127.0.0.1:5000/api/blog_posting",
         method : "PATCH",
         data : {
-          updateText : this.postText
+          postText : this.postText,
+          postId : this.postId
         },
         headers: {
           "Content-Type" : "application/json"
